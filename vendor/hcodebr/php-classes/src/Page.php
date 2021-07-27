@@ -34,6 +34,8 @@ class Page
         //atribuição de variveis no template 
         $this->setData($this->options["data"]);
 
+        //verifica se foi chamado, em seguida carrega 
+
         if ($this->options["header"] === true) $this->tpl->draw("header");
     }
 
@@ -57,7 +59,7 @@ class Page
 
     public function __destruct()
     {
-
+        //se mandou a opção footer, carrega o footer
         if ($this->options["footer"] === true) $this->tpl->draw("footer");
     }
 }

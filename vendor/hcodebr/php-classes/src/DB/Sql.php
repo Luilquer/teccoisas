@@ -8,7 +8,9 @@ class Sql
 	const HOSTNAME = "127.0.0.1";
 	const USERNAME = "root";
 	const PASSWORD = "";
-	const DBNAME = "db_teccoisas";
+	const DBNAME = "db_ecommerce";
+	//a senha é outra, tem que verificar depois 
+	// const DBNAME = "db_teccoisas";
 
 	private $conn;
 

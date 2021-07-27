@@ -82,7 +82,7 @@ desired effect
               <span class="label label-success">4</span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">You have 4 messages</li>
+              <li class="header">Você tem 4 mensagens</li>
               <li>
                 <!-- inner menu: contains the messages -->
                 <ul class="menu">
@@ -176,7 +176,7 @@ desired effect
               <!-- The user image in the navbar-->
               <img src="/res/admin/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Alexander Pierce</span>
+              <span class="hidden-xs">Carlos Luilquer</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
@@ -184,8 +184,8 @@ desired effect
                 <img src="/res/admin/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  Carlos Luilquer - UFSC
+                  <small>Desenvolvimento de sistemas web 2021.1</small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -234,7 +234,7 @@ desired effect
           <img src="/res/admin/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
+          <p>Carlos Luilquer</p>
           <!-- Status -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
