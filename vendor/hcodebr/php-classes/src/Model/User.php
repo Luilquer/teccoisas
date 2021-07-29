@@ -10,6 +10,11 @@ class User extends Model
 {
 	//constantes com nome da sessão
 	const SESSION = "User";
+	const SECRET = "TecCoisas_Secret"; //chave para criptografar a senha
+	const SECRET_IV = "HcodePhp7_Secret_IV";
+	const ERROR = "UserError";
+	const ERROR_REGISTER = "UserErrorRegister";
+	const SUCCESS = "UserSucesss";
 
 
 	//login
@@ -88,8 +93,10 @@ class User extends Model
 
 			return $user;
 		} else {
-			throw new \Exception("*Usuário inexistente* ou senha inválida.");
+			throw new \Exception("Senha inválida.");
 		}
+
+		//*Usuário inexistente* ou
 	}
 
 
@@ -107,13 +114,15 @@ class User extends Model
 			exit;
 		}
 	}
-	//sair 
+
+	//sair, limpa a session
 	public static function logout()
 	{
 
 		$_SESSION[User::SESSION] = NULL;
 	}
 
+	//lista todos os usuários do banco de dados 
 	public static function listAll()
 	{
 
@@ -122,6 +131,7 @@ class User extends Model
 		return $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) ORDER BY b.desperson");
 	}
 
+	//salvar os dados no banco de dados  
 	public function save()
 	{
 
@@ -139,6 +149,7 @@ class User extends Model
 		$this->setData($results[0]);
 	}
 
+	//método para atualizar no banco de dados 
 	public function get($iduser)
 	{
 
@@ -156,6 +167,7 @@ class User extends Model
 		$this->setData($data);
 	}
 
+	//método para atualizar no banco de dados 
 	public function update()
 	{
 
@@ -174,6 +186,7 @@ class User extends Model
 		$this->setData($results[0]);
 	}
 
+	//método para excluir no banco de dados 
 	public function delete()
 	{
 
@@ -184,9 +197,10 @@ class User extends Model
 		));
 	}
 
+	//método para redefinir a senha
 	public static function getForgot($email, $inadmin = true)
 	{
-
+		//consulta no banco de dados 
 		$sql = new Sql();
 
 		$results = $sql->select("
@@ -198,42 +212,47 @@ class User extends Model
 			":email" => $email
 		));
 
+		//verifica se encontrou algum email
 		if (count($results) === 0) {
 
 			throw new \Exception("Não foi possível recuperar a senha.");
 		} else {
-
+			//cria um novo registro na tabela 
 			$data = $results[0];
 
+			//consulta no banco de dados, cria uma nova senha
 			$results2 = $sql->select("CALL sp_userspasswordsrecoveries_create(:iduser, :desip)", array(
 				":iduser" => $data['iduser'],
 				":desip" => $_SERVER['REMOTE_ADDR']
 			));
-
+			//verifica se criou
 			if (count($results2) === 0) {
-
+				//lança uma exception
 				throw new \Exception("Não foi possível recuperar a senha.");
 			} else {
-
+				//recebe o dados gerados 
 				$dataRecovery = $results2[0];
-
+				//criptografia
 				$code = openssl_encrypt($dataRecovery['idrecovery'], 'AES-128-CBC', pack("a16", User::SECRET), 0, pack("a16", User::SECRET_IV));
 
 				$code = base64_encode($code);
 
 				if ($inadmin === true) {
-
-					$link = "http://www.hcodecommerce.com.br/admin/forgot/reset?code=$code";
+					//link para redirecionar
+					$link = "http://www.teccoisas.com.br/admin/forgot/reset?code=$code";
 				} else {
 
-					$link = "http://www.hcodecommerce.com.br/forgot/reset?code=$code";
+					$link = "http://www.teccoisas.com.br/forgot/reset?code=$code";
 				}
 
-				$mailer = new Mailer($data['desemail'], $data['desperson'], "Redefinir senha da Hcode Store", "forgot", array(
+				//envia por email, com a classe Mailer()
+				//passas os dados 
+				$mailer = new Mailer($data['desemail'], $data['desperson'], "Redefinir senha da TecCoisas Store", "forgot", array(
 					"name" => $data['desperson'],
 					"link" => $link
 				));
 
+				//envia o email para a pessoa 
 				$mailer->send();
 
 				return $link;
@@ -241,6 +260,7 @@ class User extends Model
 		}
 	}
 
+	//Decodifica para redefinir a senha 
 	public static function validForgotDecrypt($code)
 	{
 
@@ -250,6 +270,7 @@ class User extends Model
 
 		$sql = new Sql();
 
+		//verificação no banco de dados 
 		$results = $sql->select("
 			SELECT *
 			FROM tb_userspasswordsrecoveries a
@@ -264,25 +285,28 @@ class User extends Model
 		", array(
 			":idrecovery" => $idrecovery
 		));
-
+		//verifica se trouxe corretamente 
 		if (count($results) === 0) {
 			throw new \Exception("Não foi possível recuperar a senha.");
 		} else {
-
+			//retorna os dados 
 			return $results[0];
 		}
 	}
 
+
+	//ALTERA A SENHA NO BANCO DE DADOS 
 	public static function setFogotUsed($idrecovery)
 	{
 
 		$sql = new Sql();
-
+		//FAZ UM UPDATE NO BANCO DE DADOS 
 		$sql->query("UPDATE tb_userspasswordsrecoveries SET dtrecovery = NOW() WHERE idrecovery = :idrecovery", array(
 			":idrecovery" => $idrecovery
 		));
 	}
 
+	//faz o update da senha no banco de dados 
 	public function setPassword($password)
 	{
 

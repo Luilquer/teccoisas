@@ -1,4 +1,4 @@
-<!-- Content Wrapper. Contains page content -->
+Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -45,6 +45,7 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <!-- inicio do loop para exibir os dados da tabela no banco de dados  -->
                   {loop="$users"}
                   <tr>
                     <td>{$value.iduser}</td>
@@ -53,6 +54,7 @@
                     <td>{$value.deslogin}</td/>
                     <td>{if="$value.inadmin == 1"}Sim{else}Não{/if}</td>
                     <td>
+                      <!-- rotas para editar, excluir e alterar usuário -->
                       <a href="/admin/users/{$value.iduser}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Editar</a>
                       <a href="/admin/users/{$value.iduser}/password" class="btn btn-default btn-xs"><i class="fa fa-unlock"></i> Alterar Senha</a>
                       <a href="/admin/users/{$value.iduser}/delete" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Excluir</a>
@@ -77,4 +79,4 @@
 </section>
 <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
+<!-- /.content-wrapper
