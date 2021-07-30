@@ -1,68 +1,171 @@
 <?php
+
 session_start();
 require_once("vendor/autoload.php");
 
 use \Slim\Slim;
-use \Hcode\Page;
-use \Hcode\PageAdmin;
-use \Hcode\Model\User;
-use \Hcode\Model\Category;
 
 $app = new Slim();
 
 $app->config('debug', true);
 
-//rota para a pagina home
-$app->get('/', function () {
+// require_once("functions.php");
+require_once("site.php");
+require_once("admin.php");
+require_once("admin-users.php");
+require_once("admin-categories.php");
+require_once("admin-products.php");
+// require_once("admin-orders.php");
 
-	$page = new Page();
+$app->run();
 
-	$page->setTpl("index");
-});
-
-//rota para a pagina do admin
-$app->get('/admin', function () {
-
-	//método estático para verificar se está logado ou não 
-	User::verifyLogin();
-
-	$page = new PageAdmin();
-
-	$page->setTpl("index");
-});
-
-//rota para a pagina login
-$app->get('/admin/login', function () {
-
-	$page = new PageAdmin([
-		"header" => false,
-		"footer" => false
-	]);
-
-	$page->setTpl("login");
-});
+?>
 
 
-$app->post('/admin/login', function () {
-
-	User::login($_POST["login"], $_POST["password"]);
-
-	header("Location: /admin");
-	exit;
-});
-
-//rota para o logaut
-$app->get('/admin/logout', function () {
-
-	User::logout();
-
-	header("Location: /admin/login");
-
-	exit;
-});
 
 
-//**Rota que peguei do bloco de notas */
+<!-- <?php 
+// session_start();
+// require_once("vendor/autoload.php");
+
+// use \Slim\Slim;
+// use \Hcode\Page;
+// use \Hcode\PageAdmin;
+// use \Hcode\Model\User;
+// use \Hcode\Model\Category;
+
+// $app = new Slim();
+
+// $app->config('debug', true);
+
+// //rota para a pagina home
+// $app->get('/', function () {
+
+// 	$page = new Page();
+
+// 	$page->setTpl("index");
+// });
+
+// //rota para a pagina do admin
+// $app->get('/admin', function () {
+
+// 	//método estático para verificar se está logado ou não 
+// 	User::verifyLogin();
+
+// 	$page = new PageAdmin();
+
+// 	$page->setTpl("index");
+// });
+
+// //rota para a pagina login
+// $app->get('/admin/login', function () {
+
+// 	$page = new PageAdmin([
+// 		"header" => false,
+// 		"footer" => false
+// 	]);
+
+// 	$page->setTpl("login");
+// });
+
+
+// $app->post('/admin/login', function () {
+
+// 	User::login($_POST["login"], $_POST["password"]);
+
+// 	header("Location: /admin");
+// 	exit;
+// });
+
+// //rota para o logaut
+// $app->get('/admin/logout', function () {
+
+// 	User::logout();
+
+// 	header("Location: /admin/login");
+
+// 	exit;
+// });
+
+
+// //**Rota que peguei do bloco de notas */
+// // $app->post("/admin/users/create", function () {
+
+// // 	User::verifyLogin();
+
+// // 	$user = new User();
+
+// // 	$_POST["inadmin"] = (isset($_POST["inadmin"])) ? 1 : 0;
+
+// // 	$_POST['despassword'] = password_hash($_POST["despassword"], PASSWORD_DEFAULT, [
+
+// // 		"cost" => 12
+
+// // 	]);
+
+// // 	$user->setData($_POST);
+
+// // 	$user->save();
+
+// // 	header("Location: /admin/users");
+// // 	exit;
+// // });
+
+// //rota u
+// $app->get("/admin/users", function () {
+
+// 	User::verifyLogin();
+
+// 	$users = User::listAll();
+
+// 	$page = new PageAdmin();
+
+// 	$page->setTpl("users", array(
+// 		"users" => $users
+// 	));
+// });
+
+
+// $app->get("/admin/users/create", function () {
+
+// 	User::verifyLogin();
+
+// 	$page = new PageAdmin();
+
+// 	$page->setTpl("users-create");
+// });
+
+// //rota para deletar
+// $app->get("/admin/users/:iduser/delete", function ($iduser) {
+
+// 	User::verifyLogin();
+
+// 	$user = new User();
+
+// 	$user->get((int)$iduser);
+
+// 	$user->delete();
+
+// 	header("Location: /admin/users");
+// 	exit;
+// });
+
+
+// $app->get("/admin/users/:iduser", function ($iduser) {
+
+// 	User::verifyLogin();
+
+// 	$user = new User();
+
+// 	$user->get((int)$iduser);
+
+// 	$page = new PageAdmin();
+
+// 	$page->setTpl("users-update", array(
+// 		"user" => $user->getValues()
+// 	));
+// });
+
 // $app->post("/admin/users/create", function () {
 
 // 	User::verifyLogin();
@@ -71,281 +174,204 @@ $app->get('/admin/logout', function () {
 
 // 	$_POST["inadmin"] = (isset($_POST["inadmin"])) ? 1 : 0;
 
-// 	$_POST['despassword'] = password_hash($_POST["despassword"], PASSWORD_DEFAULT, [
-
-// 		"cost" => 12
-
-// 	]);
-
-// 	$user->setData($_POST);
-
 // 	$user->save();
 
 // 	header("Location: /admin/users");
 // 	exit;
 // });
 
-//rota u
-$app->get("/admin/users", function () {
+// $app->post("/admin/users/:iduser", function ($iduser) {
 
-	User::verifyLogin();
+// 	User::verifyLogin();
 
-	$users = User::listAll();
+// 	$user = new User();
 
-	$page = new PageAdmin();
+// 	$_POST["inadmin"] = (isset($_POST["inadmin"])) ? 1 : 0;
 
-	$page->setTpl("users", array(
-		"users" => $users
-	));
-});
+// 	$user->get((int)$iduser);
 
+// 	$user->setData($_POST);
 
-$app->get("/admin/users/create", function () {
+// 	$user->update();
 
-	User::verifyLogin();
+// 	header("Location: /admin/users");
+// 	exit;
+// });
 
-	$page = new PageAdmin();
+// // ROTAS PARA REDEFINIR SENHA 
+// $app->get("/admin/forgot", function () {
 
-	$page->setTpl("users-create");
-});
+// 	$page = new PageAdmin([
+// 		"header" => false,
+// 		"footer" => false
+// 	]);
 
-//rota para deletar
-$app->get("/admin/users/:iduser/delete", function ($iduser) {
+// 	$page->setTpl("forgot");
+// });
 
-	User::verifyLogin();
+// $app->post("/admin/forgot", function () {
 
-	$user = new User();
 
-	$user->get((int)$iduser);
+// 	$user = User::getForgot($_POST["email"]);
 
-	$user->delete();
+// 	header("Location: /admin/forgot/sent");
+// 	exit;
+// });
 
-	header("Location: /admin/users");
-	exit;
-});
+// $app->get("/admin/forgot/sent", function () {
 
+// 	$page = new PageAdmin([
+// 		"header" => false,
+// 		"footer" => false
+// 	]);
 
-$app->get("/admin/users/:iduser", function ($iduser) {
+// 	$page->setTpl("forgot-sent");
+// });
 
-	User::verifyLogin();
 
-	$user = new User();
+// $app->get("/admin/forgot/reset", function () {
 
-	$user->get((int)$iduser);
+// 	$user = User::validForgotDecrypt($_GET["code"]);
 
-	$page = new PageAdmin();
+// 	$page = new PageAdmin([
+// 		"header" => false,
+// 		"footer" => false
+// 	]);
 
-	$page->setTpl("users-update", array(
-		"user" => $user->getValues()
-	));
-});
+// 	$page->setTpl("forgot-reset", array(
+// 		"name" => $user["desperson"],
+// 		"code" => $_GET["code"]
+// 	));
+// });
 
-$app->post("/admin/users/create", function () {
+// $app->post("/admin/forgot/reset", function () {
 
-	User::verifyLogin();
+// 	$forgot = User::validForgotDecrypt($$_POST["code"]);
 
-	$user = new User();
+// 	User::setFogotUsed($forgot["idrecovery"]);
 
-	$_POST["inadmin"] = (isset($_POST["inadmin"])) ? 1 : 0;
+// 	$user = new User();
 
-	$user->save();
+// 	$user->get((int)$forgot["iduser"]);
 
-	header("Location: /admin/users");
-	exit;
-});
+// 	//criptrografia da senha 
+// 	$password = password_hash($_POST["password"], PASSWORD_DEFAULT, [
+// 		"cost" => 12
+// 	]);
 
-$app->post("/admin/users/:iduser", function ($iduser) {
+// 	$user->setPassword($password);
 
-	User::verifyLogin();
+// 	$page = new PageAdmin([
+// 		"header" => false,
+// 		"footer" => false
+// 	]);
 
-	$user = new User();
+// 	$page->setTpl("forgot-reset-success");
+// });
+// //********* */
 
-	$_POST["inadmin"] = (isset($_POST["inadmin"])) ? 1 : 0;
+// //ROTAS PARA A TABELA CATEGORIAS
 
-	$user->get((int)$iduser);
+// $app->get("/admin/categories", function () {
 
-	$user->setData($_POST);
+// 	User::verifyLogin();
 
-	$user->update();
+// 	$categories = Category::listAll();
 
-	header("Location: /admin/users");
-	exit;
-});
+// 	$page = new PageAdmin();
+// 	//chama o template
+// 	$page->setTpl("categories", [
+// 		'categories' => $categories
+// 	]);
+// });
 
-// ROTAS PARA REDEFINIR SENHA 
-$app->get("/admin/forgot", function () {
 
-	$page = new PageAdmin([
-		"header" => false,
-		"footer" => false
-	]);
+// $app->get("/admin/categories/create", function () {
 
-	$page->setTpl("forgot");
-});
+// 	User::verifyLogin();
 
-$app->post("/admin/forgot", function () {
+// 	$page = new PageAdmin();
+// 	//chama o template
+// 	$page->setTpl("categories-create");
+// });
 
+// $app->post("/admin/categories/create", function () {
 
-	$user = User::getForgot($_POST["email"]);
+// 	User::verifyLogin();
 
-	header("Location: /admin/forgot/sent");
-	exit;
-});
+// 	$category = new Category();
+// 	//chama o template
+// 	$category->setData($_POST);
 
-$app->get("/admin/forgot/sent", function () {
+// 	$category->save();
 
-	$page = new PageAdmin([
-		"header" => false,
-		"footer" => false
-	]);
+// 	header('Location: /admin/categories');
+// 	exit;
+// });
 
-	$page->setTpl("forgot-sent");
-});
+// $app->get("/admin/categories/:idcategory/delete", function ($idcategory) {
 
+// 	User::verifyLogin();
 
-$app->get("/admin/forgot/reset", function () {
+// 	$category = new Category();
+// 	//cahama o método para listar 
+// 	$category->get((int)$idcategory);
+// 	//método para deletar
+// 	$category->delete();
+// 	//redireciona
+// 	header('Location: /admin/categories');
+// 	exit;
+// });
 
-	$user = User::validForgotDecrypt($_GET["code"]);
+// $app->get("/admin/categories/:idcategory", function ($idcategory) {
 
-	$page = new PageAdmin([
-		"header" => false,
-		"footer" => false
-	]);
+// 	User::verifyLogin();
 
-	$page->setTpl("forgot-reset", array(
-		"name" => $user["desperson"],
-		"code" => $_GET["code"]
-	));
-});
+// 	$category = new Category();
 
-$app->post("/admin/forgot/reset", function () {
+// 	$category->get((int)$idcategory);
 
-	$forgot = User::validForgotDecrypt($$_POST["code"]);
+// 	$page = new PageAdmin();
+// 	//chama o template
+// 	$page->setTpl("categories-update", [
+// 		'category' => $category->getValues()
+// 	]);
+// });
 
-	User::setFogotUsed($forgot["idrecovery"]);
+// $app->post("/admin/categories/:idcategory", function ($idcategory) {
 
-	$user = new User();
+// 	User::verifyLogin();
 
-	$user->get((int)$forgot["iduser"]);
+// 	$category = new Category();
 
-	//criptrografia da senha 
-	$password = password_hash($_POST["password"], PASSWORD_DEFAULT, [
-		"cost" => 12
-	]);
+// 	$category->get((int)$idcategory);
+// 	//carrega os dados recebidos no formulario
+// 	$category->setData($_POST);
+// 	//salva os dados no banco de dados 
+// 	$category->save();
 
-	$user->setPassword($password);
+// 	//redireciona
+// 	header('Location: /admin/categories');
+// 	exit;
+// });
 
-	$page = new PageAdmin([
-		"header" => false,
-		"footer" => false
-	]);
+// //ROTAS PARA EXIBIR NO BANCO DE DADOS 
 
-	$page->setTpl("forgot-reset-success");
-});
-//********* */
+// $app->get("/categories/:idcategory", function ($idcategory) {
 
-//ROTAS PARA A TABELA CATEGORIAS
+// 	$category = new Category();
 
-$app->get("/admin/categories", function () {
+// 	$category->get((int)$idcategory);
 
-	User::verifyLogin();
+// 	$page = new Page();
 
-	$categories = Category::listAll();
+// 	$page->setTpl("category", [
 
-	$page = new PageAdmin();
-	//chama o template
-	$page->setTpl("categories", [
-		'categories' => $categories
-	]);
-});
+// 		'category' => $category->getValues(),
+// 		'products' =>[]
 
+// 	]);
+// });
 
-$app->get("/admin/categories/create", function () {
 
-	User::verifyLogin();
-
-	$page = new PageAdmin();
-	//chama o template
-	$page->setTpl("categories-create");
-});
-
-$app->post("/admin/categories/create", function () {
-
-	User::verifyLogin();
-
-	$category = new Category();
-	//chama o template
-	$category->setData($_POST);
-
-	$category->save();
-
-	header('Location: /admin/categories');
-	exit;
-});
-
-$app->get("/admin/categories/:idcategory/delete", function ($idcategory) {
-
-	User::verifyLogin();
-
-	$category = new Category();
-	//cahama o método para listar 
-	$category->get((int)$idcategory);
-	//método para deletar
-	$category->delete();
-	//redireciona
-	header('Location: /admin/categories');
-	exit;
-});
-
-$app->get("/admin/categories/:idcategory", function ($idcategory) {
-
-	User::verifyLogin();
-
-	$category = new Category();
-
-	$category->get((int)$idcategory);
-
-	$page = new PageAdmin();
-	//chama o template
-	$page->setTpl("categories-update", [
-		'category' => $category->getValues()
-	]);
-});
-
-$app->post("/admin/categories/:idcategory", function ($idcategory) {
-
-	User::verifyLogin();
-
-	$category = new Category();
-
-	$category->get((int)$idcategory);
-	//carrega os dados recebidos no formulario
-	$category->setData($_POST);
-	//salva os dados no banco de dados 
-	$category->save();
-
-	//redireciona
-	header('Location: /admin/categories');
-	exit;
-});
-
-//ROTAS PARA EXIBIR NO BANCO DE DADOS 
-
-$app->get("/categories/:idcategory", function ($idcategory) {
-
-	$category = new Category();
-
-	$category->get((int)$idcategory);
-
-	$page = new Page();
-
-	$page->setTpl("category", [
-
-		'category' => $category->getValues(),
-		'products' => []
-
-	]);
-});
-
-
-$app->run();
+// $app->run(); -->

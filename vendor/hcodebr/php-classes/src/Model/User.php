@@ -4,6 +4,7 @@ namespace Hcode\Model;
 
 use \Hcode\DB\Sql;
 use \Hcode\Model;
+use \Hcode\Mailer;
 
 
 class User extends Model
@@ -105,7 +106,8 @@ class User extends Model
 	{
 		//verifica se não é definida ou se é falsa
 		if (!User::checkLogin($inadmin)) {
-			//
+			//teste
+			$inadmin = true;
 			if ($inadmin) {
 				header("Location: /admin/login");
 			} else {
