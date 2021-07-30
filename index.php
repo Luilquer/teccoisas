@@ -6,6 +6,7 @@ use \Slim\Slim;
 use \Hcode\Page;
 use \Hcode\PageAdmin;
 use \Hcode\Model\User;
+use \Hcode\Model\Category;
 
 $app = new Slim();
 
@@ -184,6 +185,7 @@ $app->get("/admin/forgot", function () {
 
 $app->post("/admin/forgot", function () {
 
+
 	$user = User::getForgot($_POST["email"]);
 
 	header("Location: /admin/forgot/sent");
@@ -240,6 +242,95 @@ $app->post("/admin/forgot/reset", function () {
 
 	$page->setTpl("forgot-reset-success");
 });
+//********* */
+
+//ROTAS PARA A TABELA CATEGORIAS
+
+$app->get("/admin/categories", function () {
+
+	User::verifyLogin();
+
+	$categories = Category::listAll();
+
+	$page = new PageAdmin();
+	//chama o template
+	$page->setTpl("categories", [
+		'categories' => $categories
+	]);
+});
+
+
+$app->get("/admin/categories/create", function () {
+
+	User::verifyLogin();
+
+	$page = new PageAdmin();
+	//chama o template
+	$page->setTpl("categories-create");
+});
+
+$app->post("/admin/categories/create", function () {
+
+	User::verifyLogin();
+
+	$category = new Category();
+	//chama o template
+	$category->setData($_POST);
+
+	$category->save();
+
+	header('Location: /admin/categories');
+	exit;
+});
+
+$app->get("/admin/categories/:idcategory/delete", function ($idcategory) {
+
+	User::verifyLogin();
+
+	$category = new Category();
+	//cahama o método para listar 
+	$category->get((int)$idcategory);
+	//método para deletar
+	$category->delete();
+	//redireciona
+	header('Location: /admin/categories');
+	exit;
+});
+
+$app->get("/admin/categories/:idcategory", function ($idcategory) {
+
+	User::verifyLogin();
+
+	$category = new Category();
+
+	$category->get((int)$idcategory);
+
+	$page = new PageAdmin();
+	//chama o template
+	$page->setTpl("categories-update", [
+		'category' => $category->getValues()
+	]);
+});
+
+$app->post("/admin/categories/:idcategory", function ($idcategory) {
+
+	User::verifyLogin();
+
+	$category = new Category();
+
+	$category->get((int)$idcategory);
+	//carrega os dados recebidos no formulario
+	$category->setData($_POST);
+	//salva os dados no banco de dados 
+	$category->save();
+
+	//redireciona
+	header('Location: /admin/categories');
+	exit;
+});
+
+
+
 
 
 
