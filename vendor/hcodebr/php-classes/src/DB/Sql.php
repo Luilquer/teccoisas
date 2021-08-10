@@ -12,7 +12,7 @@ class Sql
 	//a senha é outra, tem que verificar depois 
 	// const DBNAME = "db_teccoisas";
 	//Senha para logar: 123456
-	//user: admin
+	//user: admin db_ecommerce
 
 	private $conn;
 

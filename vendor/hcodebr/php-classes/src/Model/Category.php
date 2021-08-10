@@ -112,6 +112,7 @@ class Category extends Model
 		}
 	}
 
+	// carrega os produtos de acordo com a pagina
 	public function getProductsPage($page = 1, $itemsPerPage = 8)
 	{
 
