@@ -9,6 +9,7 @@ use \Hcode\Model\User;
 use \Hcode\Model\Order;
 use \Hcode\Model\OrderStatus;
 
+//lista todos os produtos que estão no banco
 $app->get('/', function () {
 
 	$products = Product::listAll();

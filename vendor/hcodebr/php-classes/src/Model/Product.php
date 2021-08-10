@@ -19,6 +19,7 @@ class Product extends Model
 		return $sql->select("SELECT * FROM tb_products ORDER BY desproduct");
 	}
 
+	//checa a lista de produtos 
 	public static function checkList($list)
 	{
 
@@ -28,7 +29,7 @@ class Product extends Model
 			$p->setData($row);
 			$row = $p->getValues();
 		}
-
+		//retorna com os dados formatados 
 		return $list;
 	}
 
