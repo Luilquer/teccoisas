@@ -21,6 +21,7 @@ $app->get('/', function () {
 	]);
 });
 
+//exibe todos os produtos cadastrados no banco de dados 
 $app->get("/categories/:idcategory", function ($idcategory) {
 
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;

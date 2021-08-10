@@ -78,13 +78,14 @@ class Category extends Model
 		file_put_contents($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "categories-menu.html", implode('', $html));
 	}
 
+	//carrega todos os produtos 
 	public function getProducts($related = true)
 	{
 
 		$sql = new Sql();
 
 		if ($related === true) {
-
+			//consulta no banco de dados, produtos relacionados 
 			return $sql->select("
 				SELECT * FROM tb_products WHERE idproduct IN(
 					SELECT a.idproduct
@@ -97,6 +98,7 @@ class Category extends Model
 			]);
 		} else {
 
+			//consulta dos produtos que não estão relacionados 
 			return $sql->select("
 				SELECT * FROM tb_products WHERE idproduct NOT IN(
 					SELECT a.idproduct
@@ -137,22 +139,23 @@ class Category extends Model
 		];
 	}
 
+	//adiciona produtos 
 	public function addProduct(Product $product)
 	{
 
 		$sql = new Sql();
-
+		//insere na tabela produtos 
 		$sql->query("INSERT INTO tb_productscategories (idcategory, idproduct) VALUES(:idcategory, :idproduct)", [
 			':idcategory' => $this->getidcategory(),
 			':idproduct' => $product->getidproduct()
 		]);
 	}
-
+	//remove produtos 
 	public function removeProduct(Product $product)
 	{
 
 		$sql = new Sql();
-
+		//deleta produto da tabela 
 		$sql->query("DELETE FROM tb_productscategories WHERE idcategory = :idcategory AND idproduct = :idproduct", [
 			':idcategory' => $this->getidcategory(),
 			':idproduct' => $product->getidproduct()

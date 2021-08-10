@@ -3,11 +3,13 @@
 use \Hcode\Model\User;
 use \Hcode\Model\Cart;
 
+// formata o preço
 function formatPrice($vlprice)
 {
 
 	if (!$vlprice > 0) $vlprice = 0;
 
+	// padrão R$
 	return number_format($vlprice, 2, ",", ".");
 
 }
@@ -56,5 +58,3 @@ function getCartVlSubTotal()
 	return formatPrice($totals['vlprice']);
 
 }
-
- ?>
