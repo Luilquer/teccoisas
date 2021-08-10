@@ -149,6 +149,7 @@ class Product extends Model
 		$this->checkPhoto();
 	}
 
+	//retorna os produtos de acordo com a url 
 	public function getFromURL($desurl)
 	{
 
@@ -161,6 +162,7 @@ class Product extends Model
 		$this->setData($rows[0]);
 	}
 
+	//retorna as categorias relacionados com o produto 
 	public function getCategories()
 	{
 

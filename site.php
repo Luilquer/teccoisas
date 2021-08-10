@@ -51,6 +51,7 @@ $app->get("/categories/:idcategory", function ($idcategory) {
 	]);
 });
 
+//rota para exibir detalhes dos produtos 
 $app->get("/products/:desurl", function ($desurl) {
 
 	$product = new Product();
