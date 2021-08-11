@@ -174,6 +174,7 @@ class Cart extends Model
 		return Product::checkList($rows);
 	}
 
+	//pega todos os produtos que estão no carrinho, soma 
 	public function getProductsTotals()
 	{
 
@@ -187,26 +188,30 @@ class Cart extends Model
 		", [
 			':idcart' => $this->getidcart()
 		]);
-
+		//verifica se é maior que zero 
 		if (count($results) > 0) {
 			return $results[0];
 		} else {
+			//vazio 
 			return [];
 		}
 	}
 
+	//método para cálcular o frete 
 	public function setFreight($nrzipcode)
 	{
-
+		//converte para o padrão
 		$nrzipcode = str_replace('-', '', $nrzipcode);
-
+		//pega as informações totais do carrinho 
 		$totals = $this->getProductsTotals();
 
 		if ($totals['nrqtd'] > 0) {
-
+			//verificação da altura
 			if ($totals['vlheight'] < 2) $totals['vlheight'] = 2;
+			//verificação do comprimento 
 			if ($totals['vllength'] < 16) $totals['vllength'] = 16;
 
+			//dados necessários para o cálculo do frete 
 			$qs = http_build_query([
 				'nCdEmpresa' => '',
 				'sDsSenha' => '',
@@ -223,19 +228,20 @@ class Cart extends Model
 				'nVlValorDeclarado' => $totals['vlprice'],
 				'sCdAvisoRecebimento' => 'S'
 			]);
-
+			//cálculo do frete 
 			$xml = simplexml_load_file("http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazo?" . $qs);
 
 			$result = $xml->Servicos->cServico;
 
+			//verifica se houve erro 
 			if ($result->MsgErro != '') {
 
 				Cart::setMsgError($result->MsgErro);
 			} else {
-
+				//limpa as informações 
 				Cart::clearMsgError();
 			}
-
+			//salva os dados no BD
 			$this->setnrdays($result->PrazoEntrega);
 			$this->setvlfreight(Cart::formatValueToDecimal($result->Valor));
 			$this->setdeszipcode($nrzipcode);
@@ -247,6 +253,7 @@ class Cart extends Model
 		}
 	}
 
+	//formata para o padrão BR
 	public static function formatValueToDecimal($value): float
 	{
 
@@ -254,28 +261,32 @@ class Cart extends Model
 		return str_replace(',', '.', $value);
 	}
 
+	//seta a mensagem de erro 
 	public static function setMsgError($msg)
 	{
 
 		$_SESSION[Cart::SESSION_ERROR] = $msg;
 	}
 
+	//retorna o erro gerado 
 	public static function getMsgError()
 	{
 
 		$msg = (isset($_SESSION[Cart::SESSION_ERROR])) ? $_SESSION[Cart::SESSION_ERROR] : "";
-
+		//limpa a session
 		Cart::clearMsgError();
-
+		//retorna a variável 
 		return $msg;
 	}
 
+	//metodo para limpar 
 	public static function clearMsgError()
 	{
 
 		$_SESSION[Cart::SESSION_ERROR] = NULL;
 	}
 
+	//atualiza o cálculo do frete 
 	public function updateFreight()
 	{
 
@@ -285,6 +296,7 @@ class Cart extends Model
 		}
 	}
 
+	//pega valor 
 	public function getValues()
 	{
 
@@ -293,14 +305,16 @@ class Cart extends Model
 		return parent::getValues();
 	}
 
+	//calculo do total 
 	public function getCalculateTotal()
 	{
-
+		//cálculo do frete 
 		$this->updateFreight();
 
 		$totals = $this->getProductsTotals();
-
+		//subtotal
 		$this->setvlsubtotal($totals['vlprice']);
+		//total 
 		$this->setvltotal($totals['vlprice'] + (float)$this->getvlfreight());
 	}
 }
