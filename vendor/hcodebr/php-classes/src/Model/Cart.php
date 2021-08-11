@@ -116,6 +116,7 @@ class Cart extends Model
 		$this->setData($results[0]);
 	}
 
+	//adicionar produtos no carrinho 
 	public function addProduct(Product $product)
 	{
 
@@ -129,19 +130,20 @@ class Cart extends Model
 		$this->getCalculateTotal();
 	}
 
+	//remover produtos do carrinho, todos ou apenas um 
 	public function removeProduct(Product $product, $all = false)
 	{
 
 		$sql = new Sql();
-
+		//todos 
 		if ($all) {
-
+			//faz um update no BD, todos
 			$sql->query("UPDATE tb_cartsproducts SET dtremoved = NOW() WHERE idcart = :idcart AND idproduct = :idproduct AND dtremoved IS NULL", [
 				':idcart' => $this->getidcart(),
 				':idproduct' => $product->getidproduct()
 			]);
 		} else {
-
+			//apenas um 
 			$sql->query("UPDATE tb_cartsproducts SET dtremoved = NOW() WHERE idcart = :idcart AND idproduct = :idproduct AND dtremoved IS NULL LIMIT 1", [
 				':idcart' => $this->getidcart(),
 				':idproduct' => $product->getidproduct()
@@ -151,11 +153,12 @@ class Cart extends Model
 		$this->getCalculateTotal();
 	}
 
+	//pega todos os produtos que já foram adcionados no carrinho 
 	public function getProducts()
 	{
 
 		$sql = new Sql();
-
+		//consulta no BD
 		$rows = $sql->select("
 			SELECT b.idproduct, b.desproduct , b.vlprice, b.vlwidth, b.vlheight, b.vllength, b.vlweight, b.desurl, COUNT(*) AS nrqtd, SUM(b.vlprice) AS vltotal 
 			FROM tb_cartsproducts a 
@@ -167,6 +170,7 @@ class Cart extends Model
 			':idcart' => $this->getidcart()
 		]);
 
+		//verifica as figuras de cada produto 
 		return Product::checkList($rows);
 	}
 
