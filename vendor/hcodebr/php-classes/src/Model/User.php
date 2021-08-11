@@ -18,14 +18,14 @@ class User extends Model
 	const SUCCESS = "UserSucesss";
 
 
-	//login
+	//login verifica se existe 
 	public static function getFromSession()
 	{
 		//
 		$user = new User();
 		//verifica se no banco de dados existe os dados inseridos
 		if (isset($_SESSION[User::SESSION]) && (int)$_SESSION[User::SESSION]['iduser'] > 0) {
-
+			//retorna o novo usuário 
 			$user->setData($_SESSION[User::SESSION]);
 		}
 
@@ -33,9 +33,10 @@ class User extends Model
 	}
 
 
+	//verifica o login
 	public static function checkLogin($inadmin = true)
 	{
-
+		//verifica se está logado 
 		if (
 			!isset($_SESSION[User::SESSION])
 			||
@@ -46,15 +47,16 @@ class User extends Model
 			//Não está logado
 			return false;
 		} else {
-
+			//verifica se é admin ou cliente 
 			if ($inadmin === true && (bool)$_SESSION[User::SESSION]['inadmin'] === true) {
 
 				return true;
+				//ta logado mas não é admin, pode finalizar a compra
 			} else if ($inadmin === false) {
 
 				return true;
 			} else {
-
+				//não está logado 
 				return false;
 			}
 		}
