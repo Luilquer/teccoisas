@@ -142,8 +142,9 @@ $app->post("/cart/freight", function () {
 	exit;
 });
 
+//rota para logar apos a compra
 $app->get("/checkout", function () {
-
+	//validação do login
 	User::verifyLogin(false);
 
 	$address = new Address();
@@ -313,10 +314,13 @@ $app->get("/order/:idorder/paypal", function ($idorder) {
 	]);
 });
 
+//Login usuário
 $app->get("/login", function () {
 
 	$page = new Page();
 
+	//passa o erro para o template para
+	//
 	$page->setTpl("login", [
 		'error' => User::getError(),
 		'errorRegister' => User::getErrorRegister(),
@@ -324,24 +328,26 @@ $app->get("/login", function () {
 	]);
 });
 
+//login via post
 $app->post("/login", function () {
-
+	//tenta verificar o login
 	try {
-
+		//verifica o login
 		User::login($_POST['login'], $_POST['password']);
 	} catch (Exception $e) {
-
+		//e for invalido, retorna um erro 
 		User::setError($e->getMessage());
 	}
-
+	//redireciona para checkout
 	header("Location: /checkout");
 	exit;
 });
 
+//rota para sair 
 $app->get("/logout", function () {
 
 	User::logout();
-
+	//redireciona para tela de login
 	header("Location: /login");
 	exit;
 });

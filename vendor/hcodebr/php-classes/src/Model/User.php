@@ -110,9 +110,11 @@ class User extends Model
 		if (!User::checkLogin($inadmin)) {
 			//teste
 			$inadmin = true;
+			//redireciona para o adm
 			if ($inadmin) {
 				header("Location: /admin/login");
 			} else {
+				//redireciona para o login usuario
 				header("Location: /login");
 			}
 			exit;
@@ -321,13 +323,13 @@ class User extends Model
 			":iduser" => $this->getiduser()
 		));
 	}
-
+	//metodos para Erro
 	public static function setError($msg)
 	{
 
 		$_SESSION[User::ERROR] = $msg;
 	}
-
+	//retorna o erro 
 	public static function getError()
 	{
 
@@ -337,7 +339,7 @@ class User extends Model
 
 		return $msg;
 	}
-
+	//limpa erro 
 	public static function clearError()
 	{
 
@@ -400,6 +402,7 @@ class User extends Model
 		return (count($results) > 0);
 	}
 
+	//faz a criptografia da senha
 	public static function getPasswordHash($password)
 	{
 
