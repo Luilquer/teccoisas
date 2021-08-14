@@ -620,10 +620,11 @@ $app->get("/boleto/:idorder", function ($idorder) {
 	require_once($path . "layout_itau.php");
 });
 
+//rotas para verificar pedidos realizados 
 $app->get("/profile/orders", function () {
-
+	//verificação do login
 	User::verifyLogin(false);
-
+	//pega o id do usuário 
 	$user = User::getFromSession();
 
 	$page = new Page();
@@ -633,6 +634,7 @@ $app->get("/profile/orders", function () {
 	]);
 });
 
+//rota para detalhes do pedido 
 $app->get("/profile/orders/:idorder", function ($idorder) {
 
 	User::verifyLogin(false);
@@ -642,13 +644,13 @@ $app->get("/profile/orders/:idorder", function ($idorder) {
 	$order->get((int)$idorder);
 
 	$cart = new Cart();
-
+	//pega o carrinho do pedido em questão 
 	$cart->get((int)$order->getidcart());
-
+	//calcula o total 
 	$cart->getCalculateTotal();
 
 	$page = new Page();
-
+	//gera o template para o detalhes do pedido
 	$page->setTpl("profile-orders-detail", [
 		'order' => $order->getValues(),
 		'cart' => $cart->getValues(),
@@ -656,6 +658,7 @@ $app->get("/profile/orders/:idorder", function ($idorder) {
 	]);
 });
 
+//
 $app->get("/profile/change-password", function () {
 
 	User::verifyLogin(false);
@@ -667,7 +670,7 @@ $app->get("/profile/change-password", function () {
 		'changePassSuccess' => User::getSuccess()
 	]);
 });
-
+//
 $app->post("/profile/change-password", function () {
 
 	User::verifyLogin(false);

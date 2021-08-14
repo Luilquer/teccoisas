@@ -415,6 +415,7 @@ class User extends Model
 		]);
 	}
 
+	//retorna os pedidos realizados 
 	public function getOrders()
 	{
 

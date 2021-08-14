@@ -35,22 +35,24 @@ function getUserName()
 	return $user->getdesperson();
 }
 
+//pega o total do carrinho 
 function getCartNrQtd()
 {
-
+	//pega o id do carrinho 
 	$cart = Cart::getFromSession();
-
+	//pega os produtos, total 
 	$totals = $cart->getProductsTotals();
-
+	//retorna o total
 	return $totals['nrqtd'];
 }
 
+//calculo do subtotal 
 function getCartVlSubTotal()
 {
-
+	//pega o id do carrinho 
 	$cart = Cart::getFromSession();
-
+	//total
 	$totals = $cart->getProductsTotals();
-
+	//o valor formatado
 	return formatPrice($totals['vlprice']);
 }
