@@ -320,7 +320,8 @@ $app->get("/login", function () {
 	$page = new Page();
 
 	//passa o erro para o template para
-	//
+	//exibe a mensagme de erro durante o registro 
+	//verificação dos dados dos campos 
 	$page->setTpl("login", [
 		'error' => User::getError(),
 		'errorRegister' => User::getErrorRegister(),
@@ -352,40 +353,45 @@ $app->get("/logout", function () {
 	exit;
 });
 
+//novo usuário, registro 
 $app->post("/register", function () {
 
+	//armazena em um array, dados 
 	$_SESSION['registerValues'] = $_POST;
 
+	//verificação do nome 
 	if (!isset($_POST['name']) || $_POST['name'] == '') {
 
 		User::setErrorRegister("Preencha o seu nome.");
+		//redireciona
 		header("Location: /login");
 		exit;
 	}
 
+	//verificação do email
 	if (!isset($_POST['email']) || $_POST['email'] == '') {
 
 		User::setErrorRegister("Preencha o seu e-mail.");
 		header("Location: /login");
 		exit;
 	}
-
+	//verificação da senha
 	if (!isset($_POST['password']) || $_POST['password'] == '') {
 
 		User::setErrorRegister("Preencha a senha.");
 		header("Location: /login");
 		exit;
 	}
-
+	//verificação de dois usuários semelhantes
 	if (User::checkLoginExist($_POST['email']) === true) {
 
 		User::setErrorRegister("Este endereço de e-mail já está sendo usado por outro usuário.");
 		header("Location: /login");
 		exit;
 	}
-
+	//cria um novo usuario
 	$user = new User();
-
+	//passa os dados via post
 	$user->setData([
 		'inadmin' => 0,
 		'deslogin' => $_POST['email'],
@@ -394,11 +400,11 @@ $app->post("/register", function () {
 		'despassword' => $_POST['password'],
 		'nrphone' => $_POST['phone']
 	]);
-
+	//salva o usuário 
 	$user->save();
-
+	//faz avalidação e loga, passando o email e senha 
 	User::login($_POST['email'], $_POST['password']);
-
+	//redireciona 
 	header('Location: /checkout');
 	exit;
 });

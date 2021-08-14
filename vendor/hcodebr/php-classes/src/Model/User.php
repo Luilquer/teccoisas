@@ -368,15 +368,16 @@ class User extends Model
 		$_SESSION[User::SUCCESS] = NULL;
 	}
 
+	//Recebe a mensagem do erro 
 	public static function setErrorRegister($msg)
 	{
 
 		$_SESSION[User::ERROR_REGISTER] = $msg;
 	}
-
+	//retorna a mensagem de erro 
 	public static function getErrorRegister()
 	{
-
+		//verifica se foi definido, qual usurio = true, retorna o usuário. caso contrário, retorna vazio 
 		$msg = (isset($_SESSION[User::ERROR_REGISTER]) && $_SESSION[User::ERROR_REGISTER]) ? $_SESSION[User::ERROR_REGISTER] : '';
 
 		User::clearErrorRegister();
@@ -384,17 +385,19 @@ class User extends Model
 		return $msg;
 	}
 
+	//limpa o erro 
 	public static function clearErrorRegister()
 	{
 
 		$_SESSION[User::ERROR_REGISTER] = NULL;
 	}
 
+	//verificação de um usuário existente 
 	public static function checkLoginExist($login)
 	{
 
 		$sql = new Sql();
-
+		//se retorna algo, significa que existe o usuário em questão 
 		$results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :deslogin", [
 			':deslogin' => $login
 		]);
