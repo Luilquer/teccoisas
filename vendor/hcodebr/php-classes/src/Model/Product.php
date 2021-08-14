@@ -175,7 +175,7 @@ class Product extends Model
 			':idproduct' => $this->getidproduct()
 		]);
 	}
-
+	//pega a pagina 
 	public static function getPage($page = 1, $itemsPerPage = 10)
 	{
 
@@ -198,7 +198,7 @@ class Product extends Model
 			'pages' => ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
 		];
 	}
-
+	//pesquisa
 	public static function getPageSearch($search, $page = 1, $itemsPerPage = 10)
 	{
 
