@@ -465,6 +465,7 @@ $app->post("/forgot/reset", function () {
 	$page->setTpl("forgot-reset-success");
 });
 
+//rota para o perfil
 $app->get("/profile", function () {
 
 	User::verifyLogin(false);
@@ -477,19 +478,21 @@ $app->get("/profile", function () {
 		'user' => $user->getValues(),
 		'profileMsg' => User::getSuccess(),
 		'profileError' => User::getError()
+
 	]);
 });
 
+//rota post para validar os campos 
 $app->post("/profile", function () {
 
 	User::verifyLogin(false);
-
+	//campos orbigatórios 
 	if (!isset($_POST['desperson']) || $_POST['desperson'] === '') {
 		User::setError("Preencha o seu nome.");
 		header('Location: /profile');
 		exit;
 	}
-
+	//campos orbigatórios 
 	if (!isset($_POST['desemail']) || $_POST['desemail'] === '') {
 		User::setError("Preencha o seu e-mail.");
 		header('Location: /profile');
@@ -500,7 +503,7 @@ $app->post("/profile", function () {
 
 	if ($_POST['desemail'] !== $user->getdesemail()) {
 
-		if (User::checkLoginExists($_POST['desemail']) === true) {
+		if (User::checkLoginExist($_POST['desemail']) === true) {
 
 			User::setError("Este endereço de e-mail já está cadastrado.");
 			header('Location: /profile');
