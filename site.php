@@ -239,13 +239,13 @@ $app->post("/checkout", function () {
 	$address->setData($_POST);
 	//salva
 	$address->save();
-
+	//pega o id do carrinho 
 	$cart = Cart::getFromSession();
 
 	$cart->getCalculateTotal();
-
+	//novo objeto order
 	$order = new Order();
-
+	//seta os dados 
 	$order->setData([
 		'idcart' => $cart->getidcart(),
 		'idaddress' => $address->getidaddress(),
@@ -253,7 +253,7 @@ $app->post("/checkout", function () {
 		'idstatus' => OrderStatus::EM_ABERTO,
 		'vltotal' => $cart->getvltotal()
 	]);
-
+	//salva o pedido
 	$order->save();
 
 	switch ((int)$_POST['payment-method']) {
@@ -270,12 +270,14 @@ $app->post("/checkout", function () {
 	exit;
 });
 
+//Rota para pagamentos 
+//pedido
 $app->get("/order/:idorder/pagseguro", function ($idorder) {
-
+	//verifica o login
 	User::verifyLogin(false);
 
 	$order = new Order();
-
+	//carrega pelo id 
 	$order->get((int)$idorder);
 
 	$cart = $order->getCart();
@@ -284,7 +286,7 @@ $app->get("/order/:idorder/pagseguro", function ($idorder) {
 		'header' => false,
 		'footer' => false
 	]);
-
+	//carrega o template 
 	$page->setTpl("payment-pagseguro", [
 		'order' => $order->getValues(),
 		'cart' => $cart->getValues(),
@@ -529,6 +531,7 @@ $app->post("/profile", function () {
 	exit;
 });
 
+//Rota para pedidos 
 $app->get("/order/:idorder", function ($idorder) {
 
 	User::verifyLogin(false);
@@ -544,12 +547,13 @@ $app->get("/order/:idorder", function ($idorder) {
 	]);
 });
 
+//rota para gerar o boleto
 $app->get("/boleto/:idorder", function ($idorder) {
-
+	//verificação do usuáro
 	User::verifyLogin(false);
-
+	//carrega o pedido
 	$order = new Order();
-
+	//carrega pelo id 
 	$order->get((int)$idorder);
 
 	// DADOS DO BOLETO PARA O SEU CLIENTE
@@ -575,13 +579,13 @@ $app->get("/boleto/:idorder", function ($idorder) {
 	$dadosboleto["endereco2"] = $order->getdescity() . " - " . $order->getdesstate() . " - " . $order->getdescountry() . " -  CEP: " . $order->getdeszipcode();
 
 	// INFORMACOES PARA O CLIENTE
-	$dadosboleto["demonstrativo1"] = "Pagamento de Compra na Loja Hcode E-commerce";
+	$dadosboleto["demonstrativo1"] = "Pagamento de Compra na Loja TecCoisas E-commerce";
 	$dadosboleto["demonstrativo2"] = "Taxa bancária - R$ 0,00";
 	$dadosboleto["demonstrativo3"] = "";
 	$dadosboleto["instrucoes1"] = "- Sr. Caixa, cobrar multa de 2% após o vencimento";
 	$dadosboleto["instrucoes2"] = "- Receber até 10 dias após o vencimento";
-	$dadosboleto["instrucoes3"] = "- Em caso de dúvidas entre em contato conosco: suporte@hcode.com.br";
-	$dadosboleto["instrucoes4"] = "&nbsp; Emitido pelo sistema Projeto Loja Hcode E-commerce - www.hcode.com.br";
+	$dadosboleto["instrucoes3"] = "- Em caso de dúvidas entre em contato conosco: suporte@teccoisas.com.br";
+	$dadosboleto["instrucoes4"] = "&nbsp; Emitido pelo sistema Projeto Loja TecCoisas E-commerce - www.teccoisas.com.br";
 
 	// DADOS OPCIONAIS DE ACORDO COM O BANCO OU CLIENTE
 	$dadosboleto["quantidade"] = "";
@@ -603,15 +607,15 @@ $app->get("/boleto/:idorder", function ($idorder) {
 	$dadosboleto["carteira"] = "175";  // Código da Carteira: pode ser 175, 174, 104, 109, 178, ou 157
 
 	// SEUS DADOS
-	$dadosboleto["identificacao"] = "Hcode Treinamentos";
-	$dadosboleto["cpf_cnpj"] = "24.700.731/0001-08";
+	$dadosboleto["identificacao"] = "TecCoisas E-commerce";
+	$dadosboleto["cpf_cnpj"] = "77.777.777/0007-07";
 	$dadosboleto["endereco"] = "Rua Ademar Saraiva Leão, 234 - Alvarenga, 09853-120";
-	$dadosboleto["cidade_uf"] = "São Bernardo do Campo - SP";
-	$dadosboleto["cedente"] = "HCODE TREINAMENTOS LTDA - ME";
+	$dadosboleto["cidade_uf"] = "Cidade Tec - BA";
+	$dadosboleto["cedente"] = "TECCOISAS E-COMMERCE LTDA - ME";
 
-	// NÃO ALTERAR!
+	// NÃO ALTERAR! - caminho para gerar o boleto 
 	$path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "res" . DIRECTORY_SEPARATOR . "boletophp" . DIRECTORY_SEPARATOR . "include" . DIRECTORY_SEPARATOR;
-
+	//gera o boleto 
 	require_once($path . "funcoes_itau.php");
 	require_once($path . "layout_itau.php");
 });
