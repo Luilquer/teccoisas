@@ -149,7 +149,7 @@ $app->get("/checkout", function () {
 
 	$address = new Address();
 	$cart = Cart::getFromSession();
-
+	//verificação do cep
 	if (!isset($_GET['zipcode'])) {
 
 		$_GET['zipcode'] = $cart->getdeszipcode();
@@ -165,7 +165,7 @@ $app->get("/checkout", function () {
 
 		$cart->getCalculateTotal();
 	}
-
+	//validação dos campos 
 	if (!$address->getdesaddress()) $address->setdesaddress('');
 	if (!$address->getdesnumber()) $address->setdesnumber('');
 	if (!$address->getdescomplement()) $address->setdescomplement('');
@@ -185,55 +185,59 @@ $app->get("/checkout", function () {
 	]);
 });
 
+
+//
 $app->post("/checkout", function () {
 
 	User::verifyLogin(false);
 
+	//verificação dos campos, cep
 	if (!isset($_POST['zipcode']) || $_POST['zipcode'] === '') {
 		Address::setMsgError("Informe o CEP.");
 		header('Location: /checkout');
 		exit;
 	}
-
+	//verificação endereço
 	if (!isset($_POST['desaddress']) || $_POST['desaddress'] === '') {
 		Address::setMsgError("Informe o endereço.");
 		header('Location: /checkout');
 		exit;
 	}
-
+	//verifica bairro
 	if (!isset($_POST['desdistrict']) || $_POST['desdistrict'] === '') {
 		Address::setMsgError("Informe o bairro.");
 		header('Location: /checkout');
 		exit;
 	}
-
+	//cidade
 	if (!isset($_POST['descity']) || $_POST['descity'] === '') {
 		Address::setMsgError("Informe a cidade.");
 		header('Location: /checkout');
 		exit;
 	}
-
+	//UF
 	if (!isset($_POST['desstate']) || $_POST['desstate'] === '') {
 		Address::setMsgError("Informe o estado.");
 		header('Location: /checkout');
 		exit;
 	}
-
+	//País
 	if (!isset($_POST['descountry']) || $_POST['descountry'] === '') {
 		Address::setMsgError("Informe o país.");
 		header('Location: /checkout');
 		exit;
 	}
 
+	//pega o usuario logaod 
 	$user = User::getFromSession();
 
 	$address = new Address();
 
 	$_POST['deszipcode'] = $_POST['zipcode'];
 	$_POST['idperson'] = $user->getidperson();
-
+	//seta os dados 
 	$address->setData($_POST);
-
+	//salva
 	$address->save();
 
 	$cart = Cart::getFromSession();

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Hcode\Model;
 
@@ -6,15 +6,17 @@ use \Hcode\DB\Sql;
 use \Hcode\Model;
 
 //classe para dados do endereço
-class Address extends Model {
+class Address extends Model
+{
 
 	const SESSION_ERROR = "AddressError";
 
+	//pega o cep 
 	public static function getCEP($nrcep)
 	{
 
 		$nrcep = str_replace("-", "", $nrcep);
-
+		//rastreia a url
 		$ch = curl_init();
 
 		curl_setopt($ch, CURLOPT_URL, "http://viacep.com.br/ws/$nrcep/json/");
@@ -23,13 +25,13 @@ class Address extends Model {
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
 		$data = json_decode(curl_exec($ch), true);
-
+		//fecha a execução
 		curl_close($ch);
 
 		return $data;
-
 	}
 
+	//carrega o cep em questão 
 	public function loadFromCEP($nrcep)
 	{
 
@@ -44,40 +46,38 @@ class Address extends Model {
 			$this->setdesstate($data['uf']);
 			$this->setdescountry('Brasil');
 			$this->setdeszipcode($nrcep);
-
 		}
-
 	}
 
+	//salvar os dados no banco de dados 
 	public function save()
 	{
 
 		$sql = new Sql();
 
 		$results = $sql->select("CALL sp_addresses_save(:idaddress, :idperson, :desaddress, :desnumber, :descomplement, :descity, :desstate, :descountry, :deszipcode, :desdistrict)", [
-			':idaddress'=>$this->getidaddress(),
-			':idperson'=>$this->getidperson(),
-			':desaddress'=>utf8_decode($this->getdesaddress()),
-			':desnumber'=>$this->getdesnumber(),
-			':descomplement'=>utf8_decode($this->getdescomplement()),
-			':descity'=>utf8_decode($this->getdescity()),
-			':desstate'=>utf8_decode($this->getdesstate()),
-			':descountry'=>utf8_decode($this->getdescountry()),
-			':deszipcode'=>$this->getdeszipcode(),
-			':desdistrict'=>$this->getdesdistrict()
+			':idaddress' => $this->getidaddress(),
+			':idperson' => $this->getidperson(),
+			':desaddress' => utf8_decode($this->getdesaddress()),
+			':desnumber' => $this->getdesnumber(),
+			':descomplement' => utf8_decode($this->getdescomplement()),
+			':descity' => utf8_decode($this->getdescity()),
+			':desstate' => utf8_decode($this->getdesstate()),
+			':descountry' => utf8_decode($this->getdescountry()),
+			':deszipcode' => $this->getdeszipcode(),
+			':desdistrict' => $this->getdesdistrict()
 		]);
-
+		//verifica se existe 
 		if (count($results) > 0) {
 			$this->setData($results[0]);
 		}
-
 	}
 
+	//Error
 	public static function setMsgError($msg)
 	{
 
 		$_SESSION[Address::SESSION_ERROR] = $msg;
-
 	}
 
 	public static function getMsgError()
@@ -88,14 +88,11 @@ class Address extends Model {
 		Address::clearMsgError();
 
 		return $msg;
-
 	}
 
 	public static function clearMsgError()
 	{
 
 		$_SESSION[Address::SESSION_ERROR] = NULL;
-
 	}
-
 }
