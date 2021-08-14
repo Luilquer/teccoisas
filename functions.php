@@ -6,7 +6,7 @@ use \Hcode\Model\Cart;
 // formata o preço
 function formatPrice($vlprice)
 {
-
+	//verifica se não é maior que zero 
 	if (!$vlprice > 0) $vlprice = 0;
 
 	// padrão R$

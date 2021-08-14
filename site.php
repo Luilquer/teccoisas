@@ -409,6 +409,7 @@ $app->post("/register", function () {
 	exit;
 });
 
+//rota para esqueceu a senha 
 $app->get("/forgot", function () {
 
 	$page = new Page();
@@ -416,6 +417,7 @@ $app->get("/forgot", function () {
 	$page->setTpl("forgot");
 });
 
+//rota para retornar os dados via post 
 $app->post("/forgot", function () {
 
 	$user = User::getForgot($_POST["email"], false);
