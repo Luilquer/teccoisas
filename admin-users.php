@@ -57,14 +57,15 @@ $app->post("/admin/users/:iduser/password", function ($iduser) {
 	exit;
 });
 
-
+//rota para o usuário/admin
 $app->get("/admin/users", function () {
 
-	User::verifyLogin();
+	// User::verifyLogin();
 
 	$search = (isset($_GET['search'])) ? $_GET['search'] : "";
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
 
+	//verificações 
 	if ($search != '') {
 
 		$pagination = User::getPageSearch($search, $page);
@@ -74,7 +75,7 @@ $app->get("/admin/users", function () {
 	}
 
 	$pages = [];
-
+	//para adcionar os elementos na pagina
 	for ($x = 0; $x < $pagination['pages']; $x++) {
 
 		array_push($pages, [
