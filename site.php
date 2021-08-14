@@ -658,13 +658,13 @@ $app->get("/profile/orders/:idorder", function ($idorder) {
 	]);
 });
 
-//
+//para mudar senha
 $app->get("/profile/change-password", function () {
-
+	//verificação do usuário 
 	User::verifyLogin(false);
 
 	$page = new Page();
-
+	//gera o template, passando as mensagens de erro/sucesso
 	$page->setTpl("profile-change-password", [
 		'changePassError' => User::getError(),
 		'changePassSuccess' => User::getSuccess()
@@ -672,52 +672,52 @@ $app->get("/profile/change-password", function () {
 });
 //
 $app->post("/profile/change-password", function () {
-
+	//verificação do login
 	User::verifyLogin(false);
-
+	//verifica se a senha atual foi definida ou se esta vazio
 	if (!isset($_POST['current_pass']) || $_POST['current_pass'] === '') {
 
 		User::setError("Digite a senha atual.");
 		header("Location: /profile/change-password");
 		exit;
 	}
-
+	//verifica se a nova senha foi definid ou se esta vazia
 	if (!isset($_POST['new_pass']) || $_POST['new_pass'] === '') {
 
 		User::setError("Digite a nova senha.");
 		header("Location: /profile/change-password");
 		exit;
 	}
-
+	//verificação do comfirmação de senha 
 	if (!isset($_POST['new_pass_confirm']) || $_POST['new_pass_confirm'] === '') {
 
 		User::setError("Confirme a nova senha.");
 		header("Location: /profile/change-password");
 		exit;
 	}
-
+	//verifica se a nova senha é a mesma da atual 
 	if ($_POST['current_pass'] === $_POST['new_pass']) {
 
 		User::setError("A sua nova senha deve ser diferente da atual.");
 		header("Location: /profile/change-password");
 		exit;
 	}
-
+	//pega o id do usuário
 	$user = User::getFromSession();
-
+	//verificação da senha 
 	if (!password_verify($_POST['current_pass'], $user->getdespassword())) {
 
 		User::setError("A senha está inválida.");
 		header("Location: /profile/change-password");
 		exit;
 	}
-
+	//altera a senha 
 	$user->setdespassword($_POST['new_pass']);
-
+	//update no banco 
 	$user->update();
-
+	//mensagem 
 	User::setSuccess("Senha alterada com sucesso.");
-
+	//redireciona
 	header("Location: /profile/change-password");
 	exit;
 });
