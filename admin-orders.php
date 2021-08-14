@@ -116,7 +116,7 @@ $app->get("/admin/orders", function () {
 	}
 
 	$page = new PageAdmin();
-
+	//template 
 	$page->setTpl("orders", [
 		"orders" => $pagination['data'],
 		"search" => $search,

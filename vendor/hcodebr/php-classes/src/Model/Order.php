@@ -142,6 +142,7 @@ class Order extends Model
 		$_SESSION[Order::SUCCESS] = NULL;
 	}
 
+	//retorna a pagina 
 	public static function getPage($page = 1, $itemsPerPage = 10)
 	{
 
@@ -169,7 +170,7 @@ class Order extends Model
 			'pages' => ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
 		];
 	}
-
+	//pesquisa por pedido 
 	public static function getPageSearch($search, $page = 1, $itemsPerPage = 10)
 	{
 
