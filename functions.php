@@ -13,6 +13,7 @@ function formatPrice($vlprice)
 	return number_format($vlprice, 2, ",", ".");
 }
 
+//formata a data no padrão BR
 function formatDate($date)
 {
 

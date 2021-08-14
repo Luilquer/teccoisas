@@ -57,6 +57,7 @@ class Order extends Model
 		}
 	}
 
+	//lista todos os pedidos do banco de dados 
 	public static function listAll()
 	{
 
@@ -74,16 +75,18 @@ class Order extends Model
 		");
 	}
 
+	//deleta os pedidos de acorodo com a ID
 	public function delete()
 	{
 
 		$sql = new Sql();
-
+		//consulta no banco, deleta
 		$sql->query("DELETE FROM tb_orders WHERE idorder = :idorder", [
 			':idorder' => $this->getidorder()
 		]);
 	}
 
+	//pega o carrinho 
 	public function getCart(): Cart
 	{
 
@@ -94,12 +97,13 @@ class Order extends Model
 		return $cart;
 	}
 
+	//Mensagens de Erros/seta
 	public static function setError($msg)
 	{
 
 		$_SESSION[Order::ERROR] = $msg;
 	}
-
+	//retorna a mensagem de erro 
 	public static function getError()
 	{
 
@@ -109,7 +113,7 @@ class Order extends Model
 
 		return $msg;
 	}
-
+	//limpa a mensagem de erro 
 	public static function clearError()
 	{
 
