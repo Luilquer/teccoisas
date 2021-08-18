@@ -5,23 +5,18 @@ namespace Hcode\DB;
 class Sql
 {
 
-	const HOSTNAME = "127.0.0.1";
+	const HOSTNAME = "localhost";
 	const USERNAME = "root";
 	const PASSWORD = "";
 	const DBNAME = "db_teccoisas";
-	//a senha é outra, tem que verificar depois 
-	// const DBNAME = "db_teccoisas";
-	//Senha para logar: 123456
-	//user: admin db_ecommerce
-	//OBS: olhar como  é implementado a outra classe Sql e fazer modificações e testes 
+
 
 	private $conn;
 
 	public function __construct()
 	{
-
 		$this->conn = new \PDO(
-			"mysql:dbname=" . Sql::DBNAME . ";host=" . Sql::HOSTNAME,
+			"mysql:dbname=" . Sql::DBNAME . ";host=" . Sql::HOSTNAME . ";charset=utf8",
 			Sql::USERNAME,
 			Sql::PASSWORD
 		);

@@ -17,9 +17,6 @@ class Model
 		//vai até o final, strlen conta todos
 		$fieldName = substr($name, 3, strlen($name));
 
-		var_dump($method, $fieldName);
-		exit;
-
 		//verifica se é get(retorna a informação) ou set(altera o dado )
 		switch ($method) {
 

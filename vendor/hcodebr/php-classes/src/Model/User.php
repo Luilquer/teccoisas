@@ -11,7 +11,7 @@ class User extends Model
 {
 	//constantes com nome da sessão
 	const SESSION = "User";
-	const SECRET = "TecCoisas_Secret"; //chave para criptografar a senha
+	const SECRET = "HcodePhp7_Secret"; //chave para criptografar a senha
 	const SECRET_IV = "HcodePhp7_Secret_IV";
 	const ERROR = "UserError";
 	const ERROR_REGISTER = "UserErrorRegister";
@@ -69,13 +69,13 @@ class User extends Model
 
 		$sql = new Sql();
 
-		$results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :LOGIN", array(
+		$results = $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b ON a.idperson = b.idperson WHERE a.deslogin = :LOGIN", array(
 			":LOGIN" => $login
 		));
 
 		//verifica se é igual a zero
 		if (count($results) === 0) {
-			throw new \Exception("Usuário inexistente ou *senha inválida*.");
+			throw new \Exception("Usuário inexistente ou senha inválida.");
 		}
 
 		//dados do usuario
@@ -86,20 +86,16 @@ class User extends Model
 
 			$user = new User();
 
-			$user->setiduser($data["iduser"]);
-
 			$data['desperson'] = utf8_encode($data['desperson']);
 
 			$user->setData($data);
-			//cria uma sessao, pega os valores que estão dentro do banco
+
 			$_SESSION[User::SESSION] = $user->getValues();
 
 			return $user;
 		} else {
-			throw new \Exception("Senha inválida.");
+			throw new \Exception("Usuário inexistente ou senha inválida.");
 		}
-
-		//*Usuário inexistente* ou
 	}
 
 

@@ -194,6 +194,8 @@ class Order extends Model
 			':id' => $search
 		]);
 
+
+
 		$resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
 
 		return [

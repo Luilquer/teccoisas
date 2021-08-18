@@ -6,7 +6,7 @@ use \Hcode\Model\User;
 //rota para aletrar a senha pelo admin
 $app->get("/admin/users/:iduser/password", function ($iduser) {
 	//verificação do login
-	User::verifyLogin();
+	// User::verifyLogin();
 	//novo usuário
 	$user = new User();
 	//
@@ -24,7 +24,7 @@ $app->get("/admin/users/:iduser/password", function ($iduser) {
 //carrega via post
 $app->post("/admin/users/:iduser/password", function ($iduser) {
 
-	User::verifyLogin();
+	// User::verifyLogin();
 	//verificação
 	if (!isset($_POST['despassword']) || $_POST['despassword'] === '') {
 
@@ -100,7 +100,7 @@ $app->get("/admin/users", function () {
 
 $app->get("/admin/users/create", function () {
 
-	User::verifyLogin();
+	// User::verifyLogin();
 
 	$page = new PageAdmin();
 
@@ -109,7 +109,7 @@ $app->get("/admin/users/create", function () {
 
 $app->get("/admin/users/:iduser/delete", function ($iduser) {
 
-	User::verifyLogin();
+	// User::verifyLogin();
 
 	$user = new User();
 
@@ -123,7 +123,7 @@ $app->get("/admin/users/:iduser/delete", function ($iduser) {
 
 $app->get("/admin/users/:iduser", function ($iduser) {
 
-	User::verifyLogin();
+	// User::verifyLogin();
 
 	$user = new User();
 
@@ -138,7 +138,7 @@ $app->get("/admin/users/:iduser", function ($iduser) {
 
 $app->post("/admin/users/create", function () {
 
-	User::verifyLogin();
+	// User::verifyLogin();
 
 	$user = new User();
 
@@ -156,7 +156,7 @@ $app->post("/admin/users/create", function () {
 
 $app->post("/admin/users/:iduser", function ($iduser) {
 
-	User::verifyLogin();
+	// User::verifyLogin();
 
 	$user = new User();
 

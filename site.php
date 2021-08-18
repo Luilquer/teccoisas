@@ -474,7 +474,7 @@ $app->post("/forgot/reset", function () {
 //rota para o perfil
 $app->get("/profile", function () {
 
-	User::verifyLogin(false);
+	// User::verifyLogin(false);
 
 	$user = User::getFromSession();
 
@@ -491,7 +491,7 @@ $app->get("/profile", function () {
 //rota post para validar os campos 
 $app->post("/profile", function () {
 
-	User::verifyLogin(false);
+	// User::verifyLogin(false);
 	//campos orbigatórios 
 	if (!isset($_POST['desperson']) || $_POST['desperson'] === '') {
 		User::setError("Preencha o seu nome.");
@@ -534,7 +534,7 @@ $app->post("/profile", function () {
 //Rota para pedidos 
 $app->get("/order/:idorder", function ($idorder) {
 
-	User::verifyLogin(false);
+	// User::verifyLogin(false);
 
 	$order = new Order();
 
@@ -550,7 +550,7 @@ $app->get("/order/:idorder", function ($idorder) {
 //rota para gerar o boleto
 $app->get("/boleto/:idorder", function ($idorder) {
 	//verificação do usuáro
-	User::verifyLogin(false);
+	// User::verifyLogin(false);
 	//carrega o pedido
 	$order = new Order();
 	//carrega pelo id 
@@ -623,7 +623,7 @@ $app->get("/boleto/:idorder", function ($idorder) {
 //rotas para verificar pedidos realizados 
 $app->get("/profile/orders", function () {
 	//verificação do login
-	User::verifyLogin(false);
+	// User::verifyLogin(false);
 	//pega o id do usuário 
 	$user = User::getFromSession();
 
@@ -637,7 +637,7 @@ $app->get("/profile/orders", function () {
 //rota para detalhes do pedido 
 $app->get("/profile/orders/:idorder", function ($idorder) {
 
-	User::verifyLogin(false);
+	// User::verifyLogin(false);
 
 	$order = new Order();
 
@@ -661,7 +661,7 @@ $app->get("/profile/orders/:idorder", function ($idorder) {
 //para mudar senha
 $app->get("/profile/change-password", function () {
 	//verificação do usuário 
-	User::verifyLogin(false);
+	// User::verifyLogin(false);
 
 	$page = new Page();
 	//gera o template, passando as mensagens de erro/sucesso
@@ -673,7 +673,7 @@ $app->get("/profile/change-password", function () {
 //
 $app->post("/profile/change-password", function () {
 	//verificação do login
-	User::verifyLogin(false);
+	// User::verifyLogin(false);
 	//verifica se a senha atual foi definida ou se esta vazio
 	if (!isset($_POST['current_pass']) || $_POST['current_pass'] === '') {
 
