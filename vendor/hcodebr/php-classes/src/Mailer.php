@@ -8,8 +8,8 @@ class Mailer
 {
 	//classe para enviar email
 	//constantes para enviar o email
-	const USERNAME = "luilquera@gmail.com";
-	const PASSWORD = "luilquer9404";
+	const USERNAME = "email@gmail.com";
+	const PASSWORD = "senha";
 	const NAME_FROM = "TecCoisas Store";
 	//varivel 
 	private $mail;
