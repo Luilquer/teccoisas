@@ -8,7 +8,7 @@ use \Hcode\Model\OrderStatus;
 //rota para rota status
 $app->get("/admin/orders/:idorder/status", function ($idorder) {
 	//verifica o login
-	// User::verifyLogin();
+	User::verifyLogin();
 	//templamnte order
 	$order = new Order();
 
@@ -27,7 +27,7 @@ $app->get("/admin/orders/:idorder/status", function ($idorder) {
 //rota para o status do pedido 
 $app->post("/admin/orders/:idorder/status", function ($idorder) {
 	// verificação do login
-	// User::verifyLogin();
+	User::verifyLogin();
 
 	//Verificação do status ou se for vazio
 	if (!isset($_POST['idstatus']) || !(int)$_POST['idstatus'] > 0) {
@@ -54,7 +54,7 @@ $app->post("/admin/orders/:idorder/status", function ($idorder) {
 //rota para deletar o pedido 
 $app->get("/admin/orders/:idorder/delete", function ($idorder) {
 
-	// User::verifyLogin();
+	User::verifyLogin();
 
 	$order = new Order();
 
@@ -69,7 +69,7 @@ $app->get("/admin/orders/:idorder/delete", function ($idorder) {
 //rota para o pedido de acorod com o id
 $app->get("/admin/orders/:idorder", function ($idorder) {
 
-	// User::verifyLogin();
+	User::verifyLogin();
 
 	$order = new Order();
 
@@ -89,7 +89,7 @@ $app->get("/admin/orders/:idorder", function ($idorder) {
 //rota para pedidos 
 $app->get("/admin/orders", function () {
 
-	// User::verifyLogin();
+	User::verifyLogin();
 
 	$search = (isset($_GET['search'])) ? $_GET['search'] : "";
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;

@@ -8,7 +8,7 @@ use \Hcode\Model\Product;
 
 $app->get("/admin/products", function () {
 
-	// User::verifyLogin();
+	User::verifyLogin();
 
 	$search = (isset($_GET['search'])) ? $_GET['search'] : "";
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
@@ -48,7 +48,7 @@ $app->get("/admin/products", function () {
 //Cria novos produtos 
 $app->get("/admin/products/create", function () {
 
-	// User::verifyLogin();
+	User::verifyLogin();
 
 	$page = new PageAdmin();
 
@@ -58,7 +58,7 @@ $app->get("/admin/products/create", function () {
 //criar novos produtos 
 $app->post("/admin/products/create", function () {
 
-	// User::verifyLogin();
+	User::verifyLogin();
 
 	$product = new Product();
 
@@ -73,7 +73,7 @@ $app->post("/admin/products/create", function () {
 //rota para editar os produtos 
 $app->get("/admin/products/:idproduct", function ($idproduct) {
 
-	// User::verifyLogin();
+	User::verifyLogin();
 
 	$product = new Product();
 
@@ -89,7 +89,7 @@ $app->get("/admin/products/:idproduct", function ($idproduct) {
 //rota de acordo com cada produto 
 $app->post("/admin/products/:idproduct", function ($idproduct) {
 
-	// User::verifyLogin();
+	User::verifyLogin();
 
 	$product = new Product();
 
@@ -108,7 +108,7 @@ $app->post("/admin/products/:idproduct", function ($idproduct) {
 //Rota para deletar um produto 
 $app->get("/admin/products/:idproduct/delete", function ($idproduct) {
 
-	// User::verifyLogin();
+	User::verifyLogin();
 
 	$product = new Product();
 

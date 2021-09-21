@@ -5,7 +5,8 @@
             <div class="col-md-3 col-sm-6">
                 <div class="footer-about-us">
                     <h2>TecCoisas Store</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis sunt id doloribus vero quam laborum quas alias dolores blanditiis iusto consequatur, modi aliquid eveniet eligendi iure eaque ipsam iste, pariatur omnis sint! Suscipit, debitis, quisquam. Laborum commodi veritatis magni at?</p>
+                    <p>Faça compras de qualquer lugar com apenas um clique, existem diversos produtos. 
+                        Compre com segurança e com conforto de onde estiver. Conheça nossas redes sociais e saiba mais. </p>
                     <div class="footer-social">
                         <a href="https://www.facebook.com/teccoisas" target="_blank"><i class="fa fa-facebook"></i></a>
                         <a href="https://twitter.com/teccoisas" target="_blank"><i class="fa fa-twitter"></i></a>
@@ -18,9 +19,8 @@
                 <div class="footer-menu">
                     <h2 class="footer-wid-title">Navegação </h2>
                     <ul>
-                        <li><a href="#">Minha Conta</a></li>
-                        <li><a href="#">Meus Pedidos</a></li>
-                        <li><a href="#">Lista de Desejos</a></li>
+                        <li><a href="/profile">Minha Conta</a></li>
+                        <li><a href="/profile/orders">Meus Pedidos</a></li>
                     </ul>                        
                 </div>
             </div>
@@ -63,7 +63,6 @@
             
             <div class="col-md-4">
                 <div class="footer-card-icon">
-                    <i class="fa fa-cc-discover"></i>
                     <i class="fa fa-cc-mastercard"></i>
                     <i class="fa fa-cc-paypal"></i>
                     <i class="fa fa-cc-visa"></i>
